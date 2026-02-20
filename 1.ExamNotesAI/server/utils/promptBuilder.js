@@ -7,670 +7,472 @@ export const buildPrompt = ({
   includeChart
 }) => {
   return `
-You are a STRICT JSON generator for an exam preparation system.
+You are a STRICT JSON generator for an advanced exam preparation system.
 
-⚠️ VERY IMPORTANT:
-- Output MUST be valid JSON
-- Your response will be parsed using JSON.parse()
-- INVALID JSON will cause system failure
+⚠️ CRITICAL REQUIREMENTS:
+- Output MUST be valid JSON parsable by JSON.parse()
 - Use ONLY double quotes "
 - NO comments, NO trailing commas
-- Escape line breaks using \\n
-- Do NOT use emojis inside text values
+- Escape line breaks with \\n
+- NO emojis in text values
+- Use Unicode for mathematical symbols when needed
 
-TASK:
-Convert the given topic into exam-focused notes.
-
-INPUT:
+INPUT PARAMETERS:
 Topic: ${topic}
-Class Level: ${classLevel || "Not specified"}
-Exam Type: ${examType || "General"}
-Revision Mode: ${revisionMode ? "ON" : "OFF"}
+Class Level: ${classLevel || "B.Tech"}
+Exam Type: ${examType || "University Examination"}
+Revision Mode: ${revisionMode ? "ON (Quick Revision)" : "OFF (Detailed Study)"}
 Include Diagram: ${includeDiagram ? "YES" : "NO"}
 Include Charts: ${includeChart ? "YES" : "NO"}
 
-GLOBAL CONTENT RULES:
-- Use clear, simple, exam-oriented language
-- Notes MUST be Markdown formatted
-- Headings and bullet points only
-REVISION MODE RULES (CRITICAL - EXAM CRAMMING OPTIMIZED):
+📚 CONTENT STRUCTURE REQUIREMENTS:
 
-🔴 **REVISION MODE ON - ULTRA-CONCISE FORMAT FOR LAST-MINUTE PREPARATION**
+1. **NOTES FORMAT**:
+   - Use HIERARCHICAL bullet points
+   - Structure: Main Topic → Subtopic → Key Points → Examples
+   - Each bullet MUST be self-contained
+   - Use markdown formatting for readability
 
-**PRIMARY OBJECTIVE**: Create content that can be REVISED in 5-10 minutes before exam
+2. **B.TECH LEVEL CONTENT**:
+   - Include mathematical derivations where applicable
+   - Use proper notation: $E = mc^2$ for formulas
+   - Include engineering applications
+   - Add real-world examples
+   - Connect theory with practice
 
-**CORE PRINCIPLES**:
-- Maximum information density with minimum words
-- Visual scanning optimized layout
-- Memory trigger points every 3-5 lines
-- Exam-oriented filtering (only what's testable)
+REVISION MODE SPECIFICS:
 
-**STRUCTURE HIERARCHY** (Maximum 3 levels deep):
+${revisionMode ? `
+🔴 REVISION MODE ON - QUICK REVISION FORMAT:
+- Ultra-concise bullet points (max 10-15 words per point)
+- Key formulas only (no derivations)
+- Important definitions in **bold**
+- Quick comparison tables for related concepts
+- Must-know points highlighted with [IMPORTANT]
+- Common mistakes in 5 words or less
+- Maximum 3 levels of hierarchy
+- One-line mnemonics where helpful
+- Code snippets only for key syntax
+- No explanations longer than 2 lines
 
-I. **MAIN TOPIC** → One line summary
-   • **Subtopic** → Maximum 3 bullet points
-     - Key point → 5-7 words only
-       * Sub-point → Only if absolutely necessary
+**REVISION NOTES EXAMPLE STRUCTURE**:
+I. MAIN CONCEPT
+   • Definition: [One-line crisp definition]
+   • Formula: $formula$ [with variable meanings]
+   • Key Points:
+     - Point 1 (essential)
+     - Point 2 (essential)
+   • Common Mistake: [What to avoid]
+   • Trick: [Memory aid]
 
-**CONTENT TYPES WITH FORMATS**:
-
-1. **DEFINITIONS** → [Term]: One-line crisp definition
-   - Format: "X: brief explanation with key identifier"
-   - Example: "Big-O: Upper bound of algorithm growth rate"
-   - Include only distinguishing features
-
-2. **FORMULAS** → Boxed format using Unicode:
-
-
-┌─────────────────────┐
-│ FORMULA: E = mc² │
-│ WHERE: m = mass │
-│ c = light spd│
-└─────────────────────┘
-
-- No derivation, only final form
-- Variable meanings in 2-3 words each
-- Units in [brackets] if important
-
-3. **KEYWORDS** → **Bold** with → arrow to meaning
-- "Polymorphism → Many forms, same interface"
-- "Inheritance → Child acquires parent properties"
-
-4. **IMPORTANT POINTS** → Use symbols for quick scan:
-- ⚡ **CRITICAL**: Must remember (exam favorite)
-- ⚠️ **CAUTION**: Common mistake area
-- 💡 **TRICK**: Shortcut/mnemonic
-- 📌 **NOTE**: Important context
-- ✅ **FACT**: Verified truth
-- ❌ **NOT**: What it isn't (for clarity)
-
-5. **QUICK COMPARISONS** → Minimal table format:
-┌─────────┬────────────┬────────────┐
-│ Feature │ Concept A │ Concept B │
-├─────────┼────────────┼────────────┤
-│ Type │ Static │ Dynamic │
-│ Use │ When X │ When Y │
-│ Example │ [brief] │ [brief] │
-└─────────┴────────────┴────────────┘
-
-
-6. **FORMULA SHEET STYLE**:
-
-📐 QUANTUM FORMULAS:
-• λ = h/p [de Broglie]
-• Δx·Δp ≥ ħ/2 [Uncertainty]
-• E = hf [Planck]
-• ψ(x,t) [Wave function]
-
-7. **PROCESS/ALGORITHM** → 3-4 step maximum:
-QUICKSORT:
-
-Choose pivot (usually last)
-
-Partition: <pivot left, >pivot right
-
-Recursively sort partitions
-
-Combine (already sorted)
-⏱️ Time: O(n log n) avg | O(n²) worst
-💾 Space: O(log n) in-place
-
-
-8. **MNEMONICS & TRICKS** → [BRACKETED FORMAT]:
-- "OSI Model: [Please Do Not Throw Sausage Pizza Away]" 
-- "Resistor colors: [BB ROY Great Britain Very Good Wife]"
-- "Trig values: [0°,30°,45°,60°,90° = 0,½,1/√2,√3/2,1]"
-
-9. **NUMERICAL CONSTANTS** → Aligned format:
-CONSTANTS:
-π = 3.14159 g = 9.8 m/s²
-e = 2.71828 c = 3×10⁸ m/s
-h = 6.626×10⁻³⁴ R = 8.314 J/mol·K
-
-
-
-10. **EXCEPTIONS & SPECIAL CASES** → Mark with ⚠️:
- - ⚠️ "Binary search works ONLY on sorted arrays"
- - ⚠️ "DFS may not find shortest path in unweighted"
- - ⚠️ "Static methods can't be overridden"
-
-11. **COMMON EXAM QUESTIONS PATTERNS** → 🔍:
- - 🔍 "Difference between X and Y?"
- - 🔍 "Why use X instead of Y?"
- - 🔍 "What happens when Z?"
- - 🔍 "Time complexity of ...?"
-
-12. **QUICK REFERENCE CARDS** (1 concept = 5 lines max):
- ```
- ┌────────────────────────────────────┐
- │ **LINKED LIST**                     │
- │ • Node: data + next pointer         │
- │ • Types: singly, doubly, circular   │
- │ • Insert/Delete: O(1) at head       │
- │ • Search: O(n)                       │
- │ • vs Array: Dynamic size, no index   │
- └────────────────────────────────────┘
- ```
-
-13. **DIAGRAM IN TEXT** (When diagram not allowed):
- ```
- BINARY TREE:
-       root
-      /    \
-   left    right
-   /  \    /  \
- L    R  L    R
- 
- Traversals: Pre(RLR), In(LRR), Post(LRR)
- ```
-
-14. **IMPORTANCE TAGS**:
- - ⭐⭐⭐ = MUST KNOW (90% exam chance)
- - ⭐⭐ = IMPORTANT (60% exam chance)
- - ⭐ = GOOD TO KNOW (30% exam chance)
-
-15. **TIME COMPLEXITY CHEAT SHEET**:
- ```
- ⏱️ **COMPLEXITIES**:
- O(1)   → Array access, hash lookup
- O(log n) → Binary search, heap ops
- O(n)   → Linear search, traversal
- O(n²)  → Bubble sort, nested loops
- O(2ⁿ)  → Recursive without memoization
- ```
-
-**SPECIFIC FORMATTING RULES FOR REVISION MODE**:
-
-- **Line length**: Maximum 60 characters (fits in 2 columns)
-- **Bullet spacing**: Single line between points
-- **No paragraph breaks** (use new bullets instead)
-- **No explanations** starting with "because" or "since"
-- **No examples** unless absolutely necessary
-- **No derivations** or proofs
-- **No diagrams** unless text representation
-- **No multiple lines** for same point
-
-**EXAMPLE - POOR REVISION NOTES** (❌):
-
-Big-O notation is a mathematical notation that describes the limiting behavior of a function when the argument tends towards a particular value or infinity. It is commonly used in computer science to classify algorithms according to how their running time or space requirements grow as the input size grows. For example, an algorithm with O(n) time complexity will take approximately twice as long to run on a 2000-element array as on a 1000-element array. This is because...
-
-(Too long, paragraph format, contains explanation)
-
-**EXAMPLE - GOOD REVISION NOTES** (✅):
-I. ASYMPTOTIC NOTATIONS
-• Big-O (O)
-- Upper bound, worst-case
-- O(n²): Bubble sort
-- O(n log n): Merge sort
-⚡ Dominant term only
-
-• Omega (Ω)
-- Lower bound, best-case
-- Ω(n): Already sorted array
-
-• Theta (θ)
-- Tight bound, avg-case
-- θ(n log n): Merge sort avg
-
-┌─────────┬──────────┬──────────┐
-│ Notation│ Bound │ Use │
-├─────────┼──────────┼──────────┤
-│ O │ Upper │ Worst │
-│ Ω │ Lower │ Best │
-│ θ │ Tight │ Average │
-└─────────┴──────────┴──────────┘
-
-⏱️ MASTER THEOREM:
-T(n) = aT(n/b) + f(n)
-• Case 1: f(n) = O(n^(log_b(a-ε))) → T(n) = θ(n^(log_b(a)))
-• Case 2: f(n) = θ(n^(log_b(a))) → T(n) = θ(n^(log_b(a)) log n)
-• Case 3: f(n) = Ω(n^(log_b(a+ε))) → T(n) = θ(f(n))
-
-⚠️ CAUTION: Master theorem applies only when a≥1, b>1
-
-
-**REVISION POINTS REQUIREMENTS**:
-- Must be 10-15 ultra-concise points
-- Each point = 5-10 words maximum
+**REVISION POINTS REQUIREMENT**:
+- Create 8-12 ultra-concise revision points
+- Each point: 5-10 words maximum
 - Cover ALL critical exam topics
-- Ordered by importance (most important first)
-- Use symbols to indicate point type
+- Order by importance (most critical first)
+` : `
+🟢 REVISION MODE OFF - COMPREHENSIVE STUDY MATERIAL:
 
-**REVISION POINTS EXAMPLE**:
-revisionPoints: [
-"⚡ O(1): Constant time - array access",
-"⚡ O(log n): Binary search, balanced trees",
-"⚡ O(n): Linear search, traversal",
-"⚠️ O(n²): Nested loops - avoid if possible",
-"📌 Space-time tradeoff common in algorithms",
-"💡 Recursion uses stack space O(n) memory",
-"✅ Hash tables: O(1) avg, O(n) worst",
-"❌ Binary search requires sorted array",
-"⭐ Dynamic programming: memoization reduces time",
-"🔍 Graph: BFS uses queue, DFS uses stack"
-]
+**DETAILED CONTENT REQUIREMENTS**:
 
-
-**EXAM CHEAT SHEET LAYOUT** (Mental model):
-┌─────────────────────────────────────────────────┐
-│ 📚 [TOPIC NAME] - Last Minute Revision │
-├─────────────────────────────────────────────────┤
-│ ⭐⭐⭐ CORE CONCEPTS (90% exam chance) │
-│ • Concept 1: [One-line definition] │
-│ • Formula: [Boxed formula] │
-│ • Common trap: [One-line warning] │
-│ │
-│ ⭐⭐ IMPORTANT CONCEPTS (60% exam chance) │
-│ • Concept 2: [Definition] │
-│ • Comparison: [Brief table] │
-│ │
-│ ⭐ GOOD TO KNOW (30% exam chance) │
-│ • Concept 3: [One line] │
-│ • Special case: [Exception] │
-├─────────────────────────────────────────────────┤
-│ 🎯 QUICK REFERENCE │
-│ Formula 1: E = mc² │
-│ Formula 2: F = ma │
-│ Constant: c = 3×10⁸ m/s │
-└─────────────────────────────────────────────────┘
-
-
-**KEY PRINCIPLES**:
-- **BLT**: Bold, Little, Tabular (format)
-- **3-second rule**: Each point understandable in 3 seconds
-- **No more than 7±2 points per section** (Miller's Law)
-- **Chunking**: Group related concepts
-- **Signal words**: Use symbols instead of text
-- **White space**: Critical for quick scanning
-- **Alignment**: Keep related info visually aligned
-
-This enhanced version ensures revision notes are truly optimized for last-minute exam preparation, focusing on maximum recall with minimum cognitive load.
-
-
-if REVISION MODE is OFF:
-  - Notes MUST be EXTREMELY DETAILED and COMPREHENSIVE with ACADEMIC EXCELLENCE
-  
-  📚 **NOTE STRUCTURE HIERARCHY**:
-  - **Main Topic** → Roman Numerals (I., II., III.)
-    - **Subtopic** → Alphabetical (A., B., C.)
-      - **Key Concept** → Numbered (1., 2., 3.)
-        - **Details** → Bullet points (•)
-          - **Sub-details** → Dashes (-)
-            - **Examples/Applications** → Plus (+)
-              - **Edge Cases/Exceptions** → Asterisk (*)
-
-  **CONTENT DEPTH REQUIREMENTS PER CONCEPT**:
-
-  1. **DEFINITION LAYER** (Minimum 5-7 lines):
-     - Formal academic definition with citations
-     - Layman's understanding for intuition
-     - Historical context and evolution
-     - Etymology of key terms
-     - Mathematical notation (if applicable)
-     - Multiple equivalent definitions from different perspectives
-     - Boundary conditions and scope
-
-  2. **CONCEPTUAL EXPLANATION** (Minimum 15-20 lines):
-     - Core principle explanation with analogies
-     - Underlying theory and foundations
-     - Working mechanism step-by-step
-     - Visual mental model development
-     - Why this approach vs alternatives
-     - Assumptions and simplifications
-     - Limitations and constraints
-     - Connections to prerequisite concepts
-     - Bridge to advanced topics
-
-  3. **MATHEMATICAL TREATMENT** (Where applicable):
-     - Complete formula derivation with reasoning
-     - Each variable explained with units
-     - Special cases and simplifications
-     - Graphical representation
-     - Numerical examples with full working
-     - Proof of correctness
-     - Time/Space complexity analysis
-     - Error bounds and approximations
-
-  4. **PRACTICAL EXAMPLES** (Minimum 3-5 per concept):
-     - **Basic Example**: Simple case to build understanding
-       - Problem statement
-       - Step-by-step solution with reasoning
-       - Verification of answer
-       - Common pitfalls to avoid
-     
-     - **Intermediate Example**: Real-world scenario
-       - Context and background
-       - Multiple solution approaches compared
-       - Trade-offs analysis
-       - Optimization opportunities
-     
-     - **Advanced Example**: Complex implementation
-       - Industry use case
-       - Performance considerations
-       - Scalability aspects
-       - Integration with other systems
-     
-     - **Edge Case Example**: Boundary conditions
-       - Unusual inputs/scenarios
-       - Failure modes
-       - Exception handling
-       - Recovery mechanisms
-
-  5. **COMPARATIVE ANALYSIS TABLE**:
-     ```
-     ┌────────────────┬───────────────┬───────────────┬───────────────┐
-     │ Aspect         │ This Concept  │ Similar Concept│ Key Difference│
-     ├────────────────┼───────────────┼───────────────┼───────────────┤
-     │ Definition     │ ...           │ ...           │ ...           │
-     │ When to use    │ ...           │ ...           │ ...           │
-     │ Complexity     │ ...           │ ...           │ ...           │
-     │ Advantages     │ ...           │ ...           │ ...           │
-     │ Disadvantages  │ ...           │ ...           │ ...           │
-     │ Real-world use │ ...           │ ...           │ ...           │
-     └────────────────┴───────────────┴───────────────┴───────────────┘
-     ```
-
-  6. **DEEP DIVE SECTIONS**:
-     - **Theoretical Foundations**: 10+ lines on core theory
-     - **Implementation Details**: 15+ lines on practical aspects
-     - **Optimization Techniques**: 10+ lines on improvements
-     - **Common Variations**: 8+ lines on different forms
-     - **Industry Standards**: 10+ lines on best practices
-     - **Research Frontiers**: 12+ lines on current developments
-
-  7. **PROBLEM-SOLVING FRAMEWORK**:
-     - Systematic approach template
-     - Decision trees for choosing methods
-     - Checklist for verification
-     - Debugging strategies
-     - Testing methodologies
-     - Performance profiling
-
-  8. **KNOWLEDGE CONNECTIONS**:
-     ```
-     Prerequisites → CURRENT CONCEPT → Advanced Topics
-           ↓                ↓                  ↓
-     [Topic A] ──────→ [Core Idea] ──────→ [Topic B]
-           ↓                ↓                  ↓
-     [Topic C] ──────→ [Application] ─────→ [Topic D]
-     ```
-     - Map connections (minimum 5 related topics)
-     - Show dependency relationships
-     - Highlight cross-disciplinary applications
-     - Industry domain connections
-
-  9. **ERROR ANALYSIS & DEBUGGING**:
-     - **Common Mistake 1**: 
-       - Description
-       - Why it happens
-       - How to identify
-       - Correction steps
-       - Prevention strategy
-       - Example of mistake vs correct
-     
-     - **Common Mistake 2**: [Same structure]
-     - **Common Mistake 3**: [Same structure]
-
-  10. **PRACTICE EXERCISES** (Minimum 5):
-      - **Warm-up** (2 problems):
-        - Basic application
-        - Guided solution
+I. **CORE CONCEPTS** (For each major topic)
+   A. **Complete Definition** (5-7 lines)
+      - Formal academic definition
+      - Intuitive understanding with analogy
+      - Scope and limitations
+      - Key terminology explained
+   
+   B. **In-depth Explanation** (15-20 lines)
+      - Underlying principles and theory
+      - Step-by-step working mechanism
+      - Visual mental model
+      - Why this approach vs alternatives
+      - Assumptions and constraints
+      - Connections to prerequisite concepts
+   
+   C. **Mathematical Treatment** (if applicable)
+      - Complete formula derivation with reasoning
+      - Each variable explained with units
+      - Special cases and simplifications
+      - Numerical examples with full working
+      - Graphical representation
+   
+   D. **Practical Examples** (Minimum 3 per concept)
+      - **Basic Example**: Simple case to build understanding
+        * Problem statement
+        * Step-by-step solution with reasoning
+        * Verification of answer
       
-      - **Core Practice** (3 problems):
-        - Standard difficulty
-        - Hints provided
-        - Complete solutions
+      - **Intermediate Example**: Real-world scenario
+        * Context and background
+        * Multiple approaches compared
+        * Optimization opportunities
       
-      - **Challenge** (2 problems):
-        - Advanced difficulty
-        - Multiple concepts
-        - Open-ended aspects
+      - **Advanced Example**: Complex implementation
+        * Industry use case
+        * Performance considerations
+        * Integration aspects
       
-      - **Interview Style** (2 problems):
-        - Time-constrained
-        - Follow-up questions
-        - Optimization required
-
-  11. **VISUAL LEARNING ELEMENTS**:
-      - ASCII/Unicode diagrams for key concepts
-      - Flowcharts for processes
-      - Mind maps for relationships
-      - Timelines for evolution
-      - Heat maps for complexity
-      - Tree diagrams for hierarchies
-
-  12. **REAL-WORLD CASE STUDIES** (Minimum 2):
-      - **Case Study 1**:
-        - Industry: [e.g., Google, Amazon]
-        - Problem they faced
-        - How they applied this concept
-        - Implementation details
-        - Results and impact
-        - Lessons learned
+      - **Edge Cases**: Boundary conditions
+        * Unusual scenarios
+        * Exception handling
+        * Failure modes
+   
+   E. **Comparative Analysis**
+      - Table comparing with related concepts:
+        | Aspect | This Concept | Similar Concept | Key Difference |
+        |--------|--------------|-----------------|----------------|
+        | Core idea | ... | ... | ... |
+        | When to use | ... | ... | ... |
+        | Advantages | ... | ... | ... |
+        | Limitations | ... | ... | ... |
+   
+   F. **Real-world Applications**
+      - Industry: [Domain]
+      - Use case: [Specific application]
+      - Implementation: [How it's used]
+      - Benefits: [What it achieves]
+      - Example company: [Name]
+   
+   G. **Common Mistakes & Misconceptions**
+      - Mistake 1: [Description]
+        * Why it happens
+        * How to identify
+        * Correction steps
+        * Prevention strategy
+        * Example of mistake vs correct
       
-      - **Case Study 2**: [Similar structure]
+      - Mistake 2: [Same structure]
+   
+   H. **Practice Questions** (Minimum 5)
+      - **Basic**: Simple recall/application
+      - **Intermediate**: Problem-solving
+      - **Advanced**: Multi-concept integration
+      - **Exam-style**: Previous year pattern
+      - **Challenge**: Beyond syllabus
 
-  13. **RESEARCH & ADVANCED READING**:
-      - Key research papers (3-5 references)
-      - Current state-of-the-art
-      - Open problems in the field
-      - Future research directions
-      - Industry trends
+II. **KNOWLEDGE CONNECTIONS**
+   • Prerequisites needed: [List topics]
+   • Related concepts: [List related topics]
+   • Advanced topics building on this: [List]
+   • Cross-disciplinary applications: [List]
 
-  14. **QUICK REFERENCE BOX**:
-      ```
-      📌 ESSENTIAL TAKEAWAYS:
-      • Key formula: [formula]
-      • Must remember: [point]
-      • Common trap: [warning]
-      • Pro tip: [suggestion]
-      • Interview favorite: [question type]
-      ```
+III. **PROBLEM-SOLVING FRAMEWORK**
+   • Systematic approach steps
+   • Decision tree for method selection
+   • Verification checklist
+   • Debugging strategies
+   • Optimization techniques
 
-  15. **SELF-ASSESSMENT CHECKLIST**:
-      - [ ] I can define the concept in my own words
-      - [ ] I understand the mathematical derivation
-      - [ ] I can solve basic problems independently
-      - [ ] I know when to apply this vs alternatives
-      - [ ] I can explain it to someone else
-      - [ ] I've practiced edge cases
-      - [ ] I've seen real-world applications
-      - [ ] I can optimize implementations
-      - [ ] I know common pitfalls
-      - [ ] I can teach this concept
+IV. **QUICK REFERENCE SUMMARY**
+   • Key formulas (boxed)
+   • Important definitions
+   • Must-remember points
+   • Common traps to avoid
+   • Exam tips and tricks
 
-  **FORMATTING GUIDELINES**:
-  - Use Unicode symbols: →, ⇒, ↔, ∴, ∵, ≈, ≠, ≤, ≥, ⊂, ⊆, ∪, ∩, ∀, ∃, ∈, ∉
-  - Mathematical notation: $E = mc^2$ for LaTeX-style
-  - Code blocks with syntax highlighting indications
-  - Tables for comparisons
-  - Boxes for important formulas with [box] or ┌─┐
-  - Color coding in comments: [NOTE:], [IMPORTANT:], [TIP:], [WARNING:]
-  - Indentation for hierarchy (2 spaces per level)
+**CONTENT QUALITY METRICS**:
+- Minimum 800-1000 words per major topic
+- At least 4-5 worked examples
+- Minimum 2 comparative analyses
+- At least 5 practice questions with solutions
+- Multiple real-world applications
+- Comprehensive error analysis
+- Clear concept connections
+`}
 
-  **CONTENT QUALITY METRICS**:
-  - Minimum 1000 words per major topic
-  - At least 5 unique examples
-  - Minimum 3 comparative analyses
-  - At least 10 practice questions
-  - Minimum 5 visual elements
-  - At least 2 real-world case studies
-  - Minimum 10 common mistakes covered
-  - At least 5 cross-concept connections
+IMPORTANCE CLASSIFICATION:
+- ⭐ Basic Concepts (Foundation level, 10-15% weightage)
+- ⭐⭐ Important Topics (Core understanding, 25-30% weightage)
+- ⭐⭐⭐ Frequently Asked Topics (Exam critical, 55-65% weightage)
 
-  **EXAMPLE FORMAT FOR A CONCEPT**:
+DIAGRAM REQUIREMENTS:
+${includeDiagram ? `
+- Use Mermaid.js syntax for diagrams
+- All node labels in [square brackets]
+- Include clear directional flow
+- Label all components
+- Add brief description below diagram
+- Diagram types based on content:
+  * Flowcharts for processes/algorithms
+  * Class diagrams for OOP concepts
+  * Sequence diagrams for interactions
+  * Entity-relationship for databases
+` : ''}
 
-  I. [MAIN TOPIC]
-     A. [Subtopic Name]
-        1. [Key Concept Name]
-           • **Definition**:
-             Formal: [Academic definition with citation]
-             Intuitive: [Simple explanation with analogy]
-             Mathematical: $f(x) = ...$ [if applicable]
-             Scope: [When this definition applies]
-             Limitations: [Boundaries of definition]
-           
-           • **Theoretical Foundation**:
-             [10+ lines explaining the underlying theory]
-             Historical development: [Evolution of the concept]
-             Key contributors: [Important researchers]
-             Foundational principles: [Core ideas it builds on]
-           
-           • **Working Mechanism**:
-             [Step-by-step breakdown with 8-10 steps]
-             Step 1: [Detailed explanation with reasoning]
-             Step 2: [Why this step matters]
-             Step 3: [What happens here]
-             [Continue...]
-           
-           • **Mathematical Derivation**:
-             Starting point: $f_0(x)$
-             Step 1: [Algebraic manipulation]
-             Step 2: [Apply theorem]
-             Final form: $f_n(x)$
-             Interpretation: [What the math means]
-           
-           • **Example 1: [Title]**
-             + Problem: [Detailed scenario]
-             + Given: [Input data with explanation]
-             + Approach: [Why this approach]
-             + Solution:
-               - Step 1: [Working with explanation]
-               - Step 2: [Reasoning]
-               - Step 3: [Intermediate check]
-               - Final: [Answer with units]
-             + Verification: [How to check correctness]
-             + Alternative approach: [Different method]
-             + Common mistakes: [What to watch for]
-           
-           • **Example 2**: [Similar depth]
-           
-           • **Example 3**: [Similar depth]
-           
-           • **Comparison with Related Concepts**:
-             Table format:
-             | Aspect | This Concept | [Similar Concept] | Key Insight |
-             |--------|--------------|-------------------|-------------|
-             | Core idea | ... | ... | ... |
-             | Complexity | ... | ... | ... |
-             | Use case | ... | ... | ... |
-             
-           • **Real-world Application**:
-             + Industry: [Domain]
-             + Use case: [Specific application]
-             + Implementation: [How it's used]
-             + Benefits: [What it achieves]
-             + Example company: [Name]
-             + Success metrics: [Results]
-           
-           • **Common Mistakes & Misconceptions**:
-             + Mistake 1: [Description]
-               * Why it happens: [Psychology/reason]
-               * How to spot: [Warning signs]
-               * Correct approach: [Solution]
-               * Example: [Before/after]
-             
-             + Mistake 2: [Same structure]
-           
-           • **Practice Problems**:
-             + Basic: [Problem with solution]
-             + Intermediate: [Problem with hints]
-             + Advanced: [Problem with discussion]
-           
-           • **Key Takeaways**:
-             [Boxed summary of essential points]
-             
-           • **Self-Check Questions**:
-             - Q1: [Question to test understanding]
-             - Q2: [Another question]
-             - Q3: [Challenge question]
+CHART REQUIREMENTS:
+${includeChart ? `
+- Generate at least one data visualization
+- Chart types based on content:
+  * Bar charts for comparisons
+  * Line charts for trends over time
+  * Pie charts for distributions/weightage
+- All data must be numeric
+- Labels should be clear and concise
+- Include chart insights/analysis
+` : ''}
 
-  **PROGRESSIVE COMPLEXITY**:
-  - Start with simple explanations, build to complex
-  - Layer information: basic → intermediate → advanced
-  - Connect new info to previously covered concepts
-  - Preview advanced topics to create curiosity
-  - Review prerequisites when needed
-
-  **INTERACTIVE ELEMENTS** (Markdown compatible):
-  - [ ] Checkboxes for progress tracking
-  - > Blockquotes for important notes
-  - `Code` for technical terms
-  - --- Horizontal rules for section breaks
-  - ## Headings for organization
-  - *Italics* for emphasis
-  - **Bold** for key terms
-
-  This comprehensive structure ensures no concept is left superficial and every topic is covered with academic rigor suitable for B.Tech level understanding.
-
-
-IMPORTANCE RULES:
-- Divide sub-topics into THREE categories:
-  - ⭐ Very Important Topics
-  - ⭐⭐ Important Topics
-  - ⭐⭐⭐ Frequently Asked Topics
-- All three categories MUST be present
-- Base importance on exam frequency and weightage
-
-DIAGRAM RULES:
-- If INCLUDE DIAGRAM is YES:
-  - diagram.data MUST be a SINGLE STRING
-  - Valid Mermaid syntax only
-  - Must start with: graph TD
-  - Wrap EVERY node label in square brackets [ ]
-  - Do NOT use special characters inside labels
-- If INCLUDE DIAGRAM is NO:
-  - diagram.data MUST be ""
-
-CHART RULES (RECHARTS):
-- If INCLUDE CHARTS is YES:
-  - charts array MUST NOT be empty
-  - Generate at least ONE chart
-  - Choose chart based on topic type:
-    - THEORY topic → bar or pie (importance / weightage)
-    - PROCESS topic → bar or line (steps / stages)
-  - Use numeric values ONLY
-  - Labels must be short and exam-oriented
-- If INCLUDE CHARTS is NO:
-  - charts MUST be []
-
-CHART TYPES ALLOWED:
-- bar
-- line
-- pie
-
-CHART OBJECT FORMAT:
+STRICT JSON OUTPUT FORMAT:
 {
-  "type": "bar | line | pie",
-  "title": "string",
-  "data": [
-    { "name": "string", "value": 10 }
+  "metadata": {
+    "topic": "${topic}",
+    "classLevel": "${classLevel || "B.Tech"}",
+    "examType": "${examType || "University"}",
+    "revisionMode": ${revisionMode},
+    "generatedFor": "Exam Preparation"
+  },
+  "subTopics": {
+    "⭐": ["Array of basic/foundation concepts"],
+    "⭐⭐": ["Array of important core concepts"],
+    "⭐⭐⭐": ["Array of frequently asked critical concepts"]
+  },
+  "importance": "⭐ | ⭐⭐ | ⭐⭐⭐",
+  "notes": "string with hierarchical bullet points using markdown formatting",
+  "revisionPoints": [
+    "Quick recap point 1 - maximum 10 words",
+    "Quick recap point 2 - maximum 10 words",
+    "Quick recap point 3 - maximum 10 words"
+  ],
+  "keyFormulas": [
+    {
+      "name": "Formula name",
+      "formula": "$formula$",
+      "variables": "Variable explanations",
+      "whenToUse": "Brief context"
+    }
+  ],
+  "commonMistakes": [
+    {
+      "mistake": "Description of common error",
+      "correction": "How to fix it",
+      "example": "Brief example"
+    }
+  ],
+  "practiceQuestions": {
+    "basic": ["2-3 basic questions"],
+    "intermediate": ["2-3 intermediate questions"],
+    "advanced": ["1-2 advanced questions"]
+  },
+  "questions": {
+    "short": ["Array of 2-mark questions"],
+    "long": ["Array of 10-mark questions"],
+    "numerical": ["Array of numerical problems"],
+    "diagram": ${includeDiagram ? "\"Diagram-based question if applicable\"" : "\"\""}
+  },
+  "diagram": {
+    "type": "flowchart | graph | process | architecture",
+    "data": ${includeDiagram ? "\"mermaid syntax string with [bracketed] labels\"" : "\"\""},
+    "description": ${includeDiagram ? "\"Brief explanation of the diagram\"" : "\"\""}
+  },
+  "charts": ${includeChart ? `[
+    {
+      "type": "bar | line | pie",
+      "title": "Chart title",
+      "data": [
+        { "name": "Category 1", "value": 30 },
+        { "name": "Category 2", "value": 45 },
+        { "name": "Category 3", "value": 25 }
+      ],
+      "insights": "Brief analysis of what the chart shows"
+    }
+  ]` : "[]"},
+  "applications": [
+    {
+      "domain": "Industry/field",
+      "useCase": "Specific application",
+      "description": "How it's applied"
+    }
+  ],
+  "examTips": [
+    "Tip 1 for exam preparation",
+    "Tip 2 for answering questions",
+    "Tip 3 for time management"
+  ],
+  "summary": {
+    "keyTakeaways": ["3-5 most important points"],
+    "mustRemember": ["Critical formulas/concepts"],
+    "commonTraps": ["What to watch out for"]
+  },
+  "detailedSolutions": [
+    {
+      "question": "Question text",
+      "solution": {
+        "approach": "Step-by-step approach explanation",
+        "steps": [
+          "Step 1: Detailed explanation",
+          "Step 2: Detailed explanation",
+          "Step 3: Detailed explanation"
+        ],
+        "calculations": "Mathematical calculations with formulas",
+        "finalAnswer": "The final answer",
+        "verification": "How to verify the answer is correct",
+        "alternativeApproach": "Different method to solve"
+      }
+    }
+  ],
+  "codeOutputs": [
+    {
+      "language": "python/javascript/java/cpp",
+      "code": "Complete code example with comments",
+      "explanation": "Line-by-line explanation of what the code does",
+      "input": "Sample input if applicable",
+      "output": "Expected output from running the code",
+      "complexity": {
+        "time": "O(n) - Explanation",
+        "space": "O(1) - Explanation"
+      },
+      "dryRun": "Step-by-step execution trace for small input"
+    }
   ]
 }
 
-STRICT JSON FORMAT (DO NOT CHANGE):
+**FORMATTING GUIDELINES FOR NOTES FIELD**:
+- Use proper markdown: **bold** for emphasis, *italics* for terms
+- Hierarchical structure with proper indentation
+- Tables for comparisons where helpful
+- Code blocks with language specification
+- Mathematical notation in $LaTeX$ format
+- Bullet points for lists, numbers for steps
+- Box important formulas with \`\`\` or indentation
 
+**EXAMPLES OF GOOD NOTES FORMATTING**:
+
+For Revision Mode ON:
+I. **ASYMPTOTIC NOTATIONS**
+   • **Big-O (O)**: Upper bound, worst-case
+     - O(1): Constant time (array access)
+     - O(log n): Logarithmic (binary search)
+     - O(n): Linear (linear search)
+     - O(n²): Quadratic (bubble sort)
+   • **Omega (Ω)**: Lower bound, best-case
+   • **Theta (θ)**: Tight bound, average-case
+   
+   **Master Theorem**: T(n) = aT(n/b) + f(n)
+   - Case 1: f(n) = O(n^(log_b(a-ε))) → T(n) = θ(n^(log_b(a)))
+   - Case 2: f(n) = θ(n^(log_b(a))) → T(n) = θ(n^(log_b(a)) log n)
+   - Case 3: f(n) = Ω(n^(log_b(a+ε))) → T(n) = θ(f(n))
+
+For Revision Mode OFF:
+I. **ASYMPTOTIC NOTATIONS**
+   
+   A. **Big-O Notation (O)**
+      1. **Definition**: Big-O notation describes the upper bound of an algorithm's growth rate. It represents the worst-case time complexity.
+      
+         Formal definition: O(g(n)) = { f(n) : ∃ constants c > 0, n₀ > 0 such that 0 ≤ f(n) ≤ c·g(n) for all n ≥ n₀ }
+      
+         Intuitive understanding: Big-O tells us that an algorithm will not take more than a certain amount of time/resources, providing an upper guarantee on performance.
+      
+      2. **Common Complexities**:
+         - **O(1) - Constant Time**: Algorithm takes same time regardless of input size
+           * Example: Array access by index, hash table lookup
+           * Why: Direct memory access, no iteration needed
+         
+         - **O(log n) - Logarithmic Time**: Time increases logarithmically with input
+           * Example: Binary search in sorted array
+           * Why: Problem size halves each step
+           * Mathematical basis: log₂(n) steps for n elements
+         
+         - **O(n) - Linear Time**: Time grows proportionally to input size
+           * Example: Linear search, array traversal
+           * Why: Must examine each element once
+         
+         - **O(n log n) - Linearithmic Time**: Common in efficient sorting
+           * Example: Merge sort, heap sort, quick sort (avg)
+           * Why: Divide and conquer with linear merging
+         
+         - **O(n²) - Quadratic Time**: Time grows with square of input
+           * Example: Bubble sort, nested loops
+           * Why: For each element, process all elements
+         
+         - **O(2ⁿ) - Exponential Time**: Time doubles with each addition
+           * Example: Recursive Fibonacci without memoization
+           * Why: Each call branches into two recursive calls
+      
+      3. **Practical Examples**:
+         
+         **Example 1: Linear Search O(n)**
+         \`\`\`python
+         def linear_search(arr, target):
+             for i in range(len(arr)):
+                 if arr[i] == target:
+                     return i
+             return -1
+         \`\`\`
+         For array of size n, in worst case we check all n elements.
+         
+         **Example 2: Binary Search O(log n)**
+         \`\`\`python
+         def binary_search(arr, target):
+             left, right = 0, len(arr) - 1
+             while left <= right:
+                 mid = (left + right) // 2
+                 if arr[mid] == target:
+                     return mid
+                 elif arr[mid] < target:
+                     left = mid + 1
+                 else:
+                     right = mid - 1
+             return -1
+         \`\`\`
+         With each step, we eliminate half the remaining elements.
+
+**DETAILED SOLUTION EXAMPLE**:
 {
-  "subTopics": {
-    "⭐": [],
-    "⭐⭐": [],
-    "⭐⭐⭐": []
-  },
-  "importance": "⭐ | ⭐⭐ | ⭐⭐⭐",
-  "notes": "string",
-  "revisionPoints": [],
-  "questions": {
-    "short": [],
-    "long": [],
-    "diagram": ""
-  },
-  "diagram": {
-    "type": "flowchart | graph | process",
-    "data": ""
-  },
-  "charts": []
+  "detailedSolutions": [
+    {
+      "question": "Find the time complexity of the following function: 
+      def func(n):
+          if n <= 1:
+              return 1
+          return func(n-1) + func(n-1)",
+      
+      "solution": {
+        "approach": "This is a recursive function where each call makes two recursive calls with n-1. This forms a binary tree of recursion.",
+        
+        "steps": [
+          "Step 1: Identify the recurrence relation: T(n) = 2T(n-1) + O(1) for n > 1, with T(1) = O(1)",
+          "Step 2: Expand the recurrence: T(n) = 2T(n-1) + c",
+          "Step 3: T(n-1) = 2T(n-2) + c, so T(n) = 2[2T(n-2) + c] + c = 4T(n-2) + 2c + c",
+          "Step 4: After k expansions: T(n) = 2^k T(n-k) + c(2^k - 1)",
+          "Step 5: When n-k = 1, k = n-1, so T(n) = 2^(n-1) T(1) + c(2^(n-1) - 1)",
+          "Step 6: T(1) = c, so T(n) = 2^(n-1)c + c(2^(n-1) - 1) = O(2^n)"
+        ],
+        
+        "calculations": "T(n) = 2T(n-1) + 1\\nT(1) = 1\\nExpanding: T(n) = 2^n - 1",
+        
+        "finalAnswer": "The time complexity is O(2^n) - Exponential time",
+        
+        "verification": "For n=3, function makes 7 calls (2^3 - 1). For n=4, makes 15 calls. Each increment of n doubles the calls.",
+        
+        "alternativeApproach": "We can also observe that this function computes 2^(n-1) and the number of calls equals 2^n - 1, confirming exponential complexity."
+      }
+    }
+  ]
 }
 
-RETURN ONLY VALID JSON.
+**CODE OUTPUT EXAMPLE**:
+{
+  "codeOutputs": [
+    {
+      "language": "python",
+      "code": "def fibonacci(n):\\n    if n <= 1:\\n        return n\\n    return fibonacci(n-1) + fibonacci(n-2)\\n\\n# Test the function\\nfor i in range(10):\\n    print(f'F({i}) = {fibonacci(i)}')",
+      
+      "explanation": "Line 1-3: Base cases for n=0 and n=1 return n\\nLine 4: Recursive case returns sum of previous two Fibonacci numbers\\nLine 6-7: Loop to test and print first 10 Fibonacci numbers",
+      
+      "input": "No input, testing n from 0 to 9",
+      
+      "output": "F(0) = 0\\nF(1) = 1\\nF(2) = 1\\nF(3) = 2\\nF(4) = 3\\nF(5) = 5\\nF(6) = 8\\nF(7) = 13\\nF(8) = 21\\nF(9) = 34",
+      
+      "complexity": {
+        "time": "O(2^n) - Each call branches into two recursive calls, creating exponential growth",
+        "space": "O(n) - Maximum recursion depth equals n, so stack space is linear"
+      },
+      
+      "dryRun": "For fibonacci(4):\\n- fibonacci(4) calls fibonacci(3) and fibonacci(2)\\n- fibonacci(3) calls fibonacci(2) and fibonacci(1)\\n- fibonacci(2) calls fibonacci(1) and fibonacci(0)\\n- Base cases return: fibonacci(0)=0, fibonacci(1)=1\\n- Backtrack: fibonacci(2)=1+0=1, fibonacci(3)=1+1=2, fibonacci(4)=2+1=3"
+    }
+  ]
+}
+
+RETURN ONLY VALID JSON WITH ALL SECTIONS APPROPRIATELY FILLED BASED ON REVISION MODE.
 `;
 };
